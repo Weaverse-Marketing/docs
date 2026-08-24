@@ -1,0 +1,53 @@
+---
+title: "Managing Previews"
+description: "Configure local and hosted preview URLs and recover a disconnected or empty Weaverse Studio preview"
+published: true
+---
+
+# Managing Previews
+
+Studio loads your real Hydrogen storefront in its preview canvas. A preview URL must point to a running storefront that includes the matching Weaverse project and component registry.
+
+## Local preview
+
+Pilot runs locally on port `3456` by default:
+
+```bash
+npm run dev
+```
+
+Configure Studio to use `http://localhost:3456` and keep the development server running while editing.
+
+## Hosted preview
+
+Use a hosted preview for shared review, remote teammates, or environments where Studio cannot reach a developer's localhost. Ensure its environment contains the intended `WEAVERSE_PROJECT_ID` and Shopify credentials.
+
+## Storefront cannot connect
+
+Check that the server or deployment is running, the URL and protocol are correct, CSP allows Studio, and no firewall, VPN, extension, or tunnel blocks the connection.
+
+## Storefront loads but has nothing editable
+
+Check that:
+
+- The route calls `context.weaverse.loadPage()` with the right type and handle.
+- The route renders `WeaverseContent`.
+- `WEAVERSE_PROJECT_ID` matches the project open in Studio.
+- The page has content or a template assignment for the selected locale.
+- Section root elements receive `ref` and the remaining Weaverse props.
+
+## Recover from the preview screen
+
+The current preview screen provides direct actions to open setup, switch to a working preview, manage preview URLs, or return to project setup when a local preview is disconnected.
+
+## Multiple preview URLs
+
+1. Name each URL by purpose, such as Local, Staging, or Production.
+2. Confirm which URL is active before evaluating a change.
+3. Keep environment/project IDs consistent with the intended content source.
+4. Remove obsolete URLs so editors do not review the wrong deployment.
+
+<CardGroup cols={2}>
+  <Card title="Preview connection errors" icon="plug-circle-xmark" href="/troubleshooting/preview-errors">Diagnose networking, CSP, environment, and runtime failures.</Card>
+  <Card title="Component not selectable" icon="cursor" href="/troubleshooting/component-not-selectable">Fix a storefront that loads but cannot expose editable components.</Card>
+</CardGroup>

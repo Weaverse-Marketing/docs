@@ -531,7 +531,6 @@ Here's the standard pattern for implementing Weaverse page rendering in a React 
 ```typescript
 // app/routes/products.$productHandle.tsx
 import type { LoaderFunctionArgs } from "react-router";
-import { data } from "@shopify/remix-oxygen";
 
 export async function loader({ params, context }: LoaderFunctionArgs) {
   const { productHandle } = params;
@@ -552,10 +551,10 @@ export async function loader({ params, context }: LoaderFunctionArgs) {
     throw new Response("Product not found", { status: 404 });
   }
   
-  return data({
+  return {
     product: productData.product,
     weaverseData,
-  });
+  };
 }
 ```
 

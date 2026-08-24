@@ -58,7 +58,7 @@ In multilingual storefronts, the first segment of the URL may be a locale (e.g.,
 
 ```tsx
 // app/routes/($locale)._index.tsx
-import type { LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import type { LoaderFunctionArgs } from "react-router";
 import type { PageType } from "@weaverse/hydrogen";
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -96,12 +96,12 @@ export async function loader(args: LoaderFunctionArgs) {
 
 ```tsx
 // app/routes/($locale).$.tsx
-import type { LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import type { LoaderFunctionArgs } from "react-router";
 import { WeaverseContent } from "~/weaverse";
 
 /**
  * Loader for custom pages. Fetches Weaverse custom page data for the current route.
- * @param context - Remix loader context with Weaverse integration
+ * @param context - React Router loader context with Weaverse integration
  * @returns Weaverse page data if found, otherwise throws 404
  */
 export async function loader({ context }: LoaderFunctionArgs) {

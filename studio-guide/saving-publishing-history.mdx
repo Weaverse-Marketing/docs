@@ -1,0 +1,76 @@
+---
+title: "Saving, Publishing, and History"
+description: "Work safely with Studio session drafts, saved versions, publishing, scheduling, restoration, and project backups"
+published: true
+---
+
+# Saving, Publishing, and History
+
+Studio separates in-progress editing from saved and published content so you control when a set of changes becomes durable and when it reaches the storefront.
+
+## Content states
+
+| State | Meaning |
+|---|---|
+| Session draft | Changes made during the current editing session that have not been explicitly saved |
+| Saved version | A durable page revision recorded in history |
+| Published version | The saved revision selected for the live storefront |
+| Scheduled version | A saved revision queued for publication at a chosen time |
+| Project backup | A project-level snapshot used to review and restore broader content changes |
+
+## Save a page
+
+1. Confirm the active page, template, and locale.
+2. Review the outline for accidental moves, hidden items, or deletions.
+3. Check the relevant responsive preview widths.
+4. Select **Save**.
+5. If saving fails, read the specific reason shown by Studio, correct it, and retry.
+
+Studio keeps rapid successive save and publish operations synchronized so the recorded version and published page do not drift apart.
+
+## Publish a page
+
+1. Confirm the saved version contains the complete change.
+2. Verify the current locale and any template assignment.
+3. Select **Publish** and wait for confirmation.
+4. Open the live URL outside Studio and verify the published result.
+
+<Warning>
+  Publishing is context-sensitive. A localized page can have a different assignment from the base locale. Verify the locale selector before publishing or restoring content.
+</Warning>
+
+## Restore from Version History
+
+1. Open **Version History** in the left sidebar.
+2. Select a revision and review its time and change context.
+3. Confirm you are viewing the intended page and locale.
+4. Restore the revision.
+5. Review the restored page in the canvas.
+6. Save and publish deliberately; do not assume restoration should immediately replace live content.
+
+Restoration and scheduling preserve the correct page association, including when multiple updates happen close together.
+
+## Schedule publishing
+
+Schedule only a reviewed, saved version. Confirm the page and locale, publication time and timezone, template assignments, campaign dependencies, and who will verify the result.
+
+## Project backups
+
+Use a project backup before bulk content operations, large imports, broad theme-setting changes, or an API-driven migration. Each backup includes a plain-language change summary so you can inspect what a restore would alter before proceeding.
+
+| Use Version History when… | Use a project backup when… |
+|---|---|
+| One page or locale needs inspection or restoration | A change affects many pages or project-wide settings |
+| You need a page revision timeline | You need a broader recovery point |
+| The page structure changed locally | An import, automation, or migration changes project content |
+
+## API-driven changes
+
+Content API writes can affect live content immediately and use the same cache-invalidation path as Studio saves. Before automation writes, create a backup for broad changes, read the current resource, send the smallest supported patch, fetch it again, and review the result in Studio and on the storefront.
+
+See the [Content API overview](/content-api/overview) for write semantics and endpoint-specific safety guidance.
+
+<CardGroup cols={2}>
+  <Card title="Studio interface" icon="paintbrush" href="/studio-guide/interface-tour">Return to the workspace overview.</Card>
+  <Card title="Content API" icon="code" href="/content-api/overview">Read and update content programmatically.</Card>
+</CardGroup>

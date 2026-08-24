@@ -8,10 +8,87 @@ published: true
 
 Stay up-to-date with the latest features, improvements, and bug fixes across the entire Weaverse ecosystem.
 
+<Update label="2026.8.11" description="August 11, 2026" tags={["Studio"]}>
+  ### Improvements
+
+  - **More reliable page publishing**: Saving and publishing now keep page content synchronized, including when several updates happen close together. See [Saving, Publishing, and History](/studio-guide/saving-publishing-history).
+  - **Safer page history and scheduling**: Restoring or scheduling a saved version stays associated with the correct page.
+
+  ### Bug Fixes
+
+  - **Clearer custom-page name conflicts**: Studio now explains when a custom-page name is already in use so you can choose another one.
+</Update>
+
+<Update label="Pilot v2026.7.28" description="July 28, 2026" tags={["Pilot", "Theme"]}>
+  ### New Features
+
+  - **Instant add-to-cart drawer**: The drawer opens as the add request is submitted, stages the optimistic cart line, and holds pricing in a skeleton until Shopify confirms it.
+  - **Spacer section**: Adds merchant-configurable responsive height and background options. See [Pilot Sections](/hydrogen-themes/pilot-theme-sections).
+
+  ### Improvements and Fixes
+
+  - Preserves cart-line identity, prevents optimistic count overshoot, fixes cart-note clearing, and restructures shared cart state with correctness coverage.
+  - Enables React Router's `v8_passThroughRequests` and `v8_trailingSlashAwareDataRequests` future flags.
+  - Updates Hydrogen to `2026.4.4`, Weaverse Hydrogen to `5.19.2`, React to `19.2.8`, Vite to `8.1.5`, Swiper to v14, and Biome to `2.5.5`.
+
+  <Note>
+    Swiper 14 requires Chrome/Edge 110+, Firefox 110+, and Safari/iOS 16.4+. Follow [Upgrading Pilot](/hydrogen-themes/pilot-upgrading) before applying this release to a customized storefront.
+  </Note>
+</Update>
+
+<Update label="Pilot v2026.7.22" description="July 22, 2026" tags={["Pilot", "Theme"]}>
+  ### New Features
+
+  - **Installable Mobile App (PWA)**: Adds an optional Mobile app theme-settings group, merchant-generated manifest, Android install prompt, iOS hint, and whitelist-only service worker. See [Installable Mobile App](/features/mobile-app-pwa) and [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
+<Update label="Pilot v2026.6.24" description="June 24, 2026" tags={["Pilot", "Theme"]}>
+  ### Improvements
+
+  - Rewrites Pilot onboarding around agent-first setup, Weaverse MCP, and the current stack.
+  - Explicitly configures React Router v8 future flags to remove development warnings. Later releases change the intended flag state; use the final target described in [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
+<Update label="Pilot v2026.6.11" description="June 11, 2026" tags={["Pilot", "Theme"]}>
+  ### Improvements
+
+  - Raises the Node.js requirement to 22.12+ for Shopify CLI 4 and updates Hydrogen, React Router, and Weaverse Hydrogen.
+  - Adds custom-page SEO and sitemap integration, ScrollReveal transition state, and full-width Hero Video cover behavior.
+  - Migration notes are collected in [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
+<Update label="Pilot v2026.5.18" description="May 18, 2026" tags={["Pilot", "Theme"]}>
+  ### New Features and Fixes
+
+  - Adds multiple language variants per country, grouped language selection, additional market locales, and country sorting.
+  - Refines Hero Video transitions and responsive spacing, fixes stale checkout totals after line removal, and moves Hero Video to `react-player` v3 for Vite 8 compatibility.
+  - See [Markets and Localization](/features/markets-localization) and [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
+<Update label="Pilot v2026.5.4" description="May 4, 2026" tags={["Pilot", "Theme"]}>
+  ### Bug Fixes
+
+  - Prevents Shopify Analytics from redefining a non-configurable `window.Shopify` installed by Shopify's account web component. See the sequencing note in [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
+<Update label="Pilot v2026.4.20" description="April 20, 2026" tags={["Pilot", "Theme"]}>
+  ### New Features and Improvements
+
+  - Adds swimlane scroll arrows, expanded Hero Video controls, and Slideshow dot/arrow options.
+  - Moves headings to semantic tags, refines typography and section gaps, and fixes video and cart layout issues. See [Pilot Sections](/hydrogen-themes/pilot-theme-sections).
+</Update>
+
+<Update label="Pilot v2026.4.15" description="April 18, 2026" tags={["Pilot", "Theme"]}>
+  ### New Features
+
+  - Adds sticky add-to-cart, Buy Now options, dynamic collection counts, sticky product media, footer newsletter width, and quick-shop placeholders.
+  - Modernizes product-grid state, sharing controls, and React 19 ref handling. See [Upgrading Pilot](/hydrogen-themes/pilot-upgrading).
+</Update>
+
 <Update label="2026.7.18" description="July 7, 2026" tags={["Studio"]}>
   ### Improvements
 
-  - **A clearer path when a preview won't load**: When your storefront preview can't connect or has nothing to edit yet, the preview screen now points you straight to the fix — open the setup guide, switch to a working preview, or manage your preview URLs — instead of leaving you at a dead end. The preview, setup, and Manage previews screens now share a consistent look and work together smoothly.
+  - **A clearer path when a preview won't load**: When your storefront preview can't connect or has nothing to edit yet, the preview screen now points you straight to the fix — open the setup guide, switch to a working preview, or manage your preview URLs — instead of leaving you at a dead end. See [Managing Previews](/studio-guide/managing-previews).
 
   ### Bug Fixes
 
@@ -21,19 +98,19 @@ Stay up-to-date with the latest features, improvements, and bug fixes across the
 <Update label="2026.7.17" description="July 7, 2026" tags={["API"]}>
   ### New Features
 
-  - **Get components with their defaults filled in**: When you fetch a single page from the Content API, you can now ask for every component to come back with its default values already included. Add `?includeDefaults=true` to your request and any setting you left untouched arrives with its built-in default — no need to look it up yourself.
+  - **Get components with their defaults filled in**: When you fetch a single page from the Content API, you can now ask for every component to come back with its default values already included. Add `?includeDefaults=true` to your request and any setting you left untouched arrives with its built-in default. See [Get Page](/content-api/get-page#query-parameters).
 </Update>
 
 <Update label="2026.7.16" description="July 3, 2026" tags={["API"]}>
   ### New Features
 
-  - **Write to your content over the API**: The Content API can now make changes, not just read. Update your theme settings and project details programmatically, so your own tools and AI assistants can push updates back into Weaverse. See the [Content API overview](/content-api/overview).
+  - **Write to your content over the API**: The Content API can now make changes, not just read. Update pages, theme settings, and project details programmatically. See the [Content API overview](/content-api/overview), [Update Page](/content-api/update-page), [Update Theme Settings](/content-api/update-theme-settings), and [Update Project](/content-api/update-project).
 </Update>
 
 <Update label="2026.7.11" description="July 1, 2026" tags={["Studio"]}>
   ### New Features
 
-  - **Keyboard shortcuts guide**: A new quick-reference lists every editor keyboard shortcut, so you can move around the editor without reaching for the mouse.
+  - **Keyboard shortcuts guide**: A new quick-reference lists every editor keyboard shortcut, so you can move around the editor without reaching for the mouse. See [Keyboard Shortcuts](/studio-guide/keyboard-shortcuts).
 
   ### Improvements
 
@@ -57,7 +134,7 @@ Stay up-to-date with the latest features, improvements, and bug fixes across the
 <Update label="2026.6.29" description="June 23, 2026" tags={["Studio", "Marketing"]}>
   ### New Features
 
-  - **Project backups**: Save and restore snapshots of your project's content. Each backup shows you a plain-language summary of what changed, so you can see exactly what a restore would alter before you go ahead.
+  - **Project backups**: Save and restore snapshots of your project's content. Each backup shows you a plain-language summary of what changed, so you can see exactly what a restore would alter before you go ahead. See [Saving, Publishing, and History](/studio-guide/saving-publishing-history#project-backups).
   - **New Careers and Partners pages**: Added a Careers page and refreshed the Partners page on our website.
 
   ### Improvements
@@ -74,7 +151,7 @@ Stay up-to-date with the latest features, improvements, and bug fixes across the
 <Update label="2026.6.19" description="June 19, 2026" tags={["Studio"]}>
   ### New Features
 
-  - **Copy and paste styling between elements**: Copy the look of one element and paste it onto another, so you can reuse a style across your page without redoing every setting.
+  - **Copy and paste styling between elements**: Copy the look of one element and paste it onto another, so you can reuse a style across your page without redoing every setting. See [Keyboard Shortcuts](/studio-guide/keyboard-shortcuts#copy-and-paste-styling).
 
   ### Improvements
 
@@ -173,6 +250,7 @@ Stay up-to-date with the latest features, improvements, and bug fixes across the
   - **Public Custom Pages API**: New unauthenticated endpoint for sitemap and crawler integrations
     - `GET /api/public/v1/projects/:projectId/custom-pages` — returns paginated, locale-filtered published custom pages
     - CDN-cacheable and rate-limited (60 req/min per IP per project)
+    - See [List Public Custom Pages](/content-api/public-custom-pages)
 
   ### Improvements
 
@@ -184,7 +262,7 @@ Stay up-to-date with the latest features, improvements, and bug fixes across the
 <Update label="2026.4.21" description="April 21, 2026" tags={["Studio"]}>
   ### New Features
 
-  - **Session Drafts**: Edits now live in session draft state until you explicitly save — fewer interruptions while editing, and you stay in control of when changes commit.
+  - **Session Drafts**: Edits now live in session draft state until you explicitly save — fewer interruptions while editing, and you stay in control of when changes commit. See [Saving, Publishing, and History](/studio-guide/saving-publishing-history).
 
   ### Bug Fixes
 

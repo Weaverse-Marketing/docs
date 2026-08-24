@@ -54,12 +54,14 @@ export function Button({ children, className = '', ...props }) {
 Theme sections for Weaverse Studio:
 ```tsx
 // Example: app/sections/Hero.tsx
-import { forwardRef } from 'react';
+import type { HydrogenComponentProps } from '@weaverse/hydrogen';
+import type { Ref } from 'react';
 
-export type HeroProps = {
+export type HeroProps = HydrogenComponentProps & {
   heading: string;
   description: string;
   className?: string;
+  ref: Ref<HTMLElement>;
 };
 
 export let schema = {
@@ -76,12 +78,13 @@ export let schema = {
   ]
 };
 
-export let Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
-  let { heading, description, className = '' } = props;
+export function Hero(props: HeroProps) {
+  let { heading, description, className = '', ref, ...rest } = props;
   
   return (
     <section 
       ref={ref}
+      {...rest}
       className={`py-12 px-4 max-w-7xl mx-auto ${className}`}
     >
       <div className="text-center">
@@ -94,9 +97,7 @@ export let Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
       </div>
     </section>
   );
-});
-
-Hero.displayName = 'Hero';
+}
 ```
 
 ### `/app/weaverse`
@@ -145,7 +146,7 @@ Server-side rendering setup with React Router v7:
 ```tsx
 import { ServerRouter } from "react-router";
 import { createContentSecurityPolicy } from "@shopify/hydrogen";
-import type { AppLoadContext, EntryContext } from "@shopify/remix-oxygen";
+import type { AppLoadContext, EntryContext } from "react-router";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
 import { getWeaverseCsp } from "~/weaverse/csp";

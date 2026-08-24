@@ -27,17 +27,19 @@ https://studio.weaverse.io/api/v1/content
 |--------|------|-------------|
 | `GET` | [`/projects`](/content-api/list-projects) | List all projects |
 | `GET` | `/projects/:projectId` | Get a single project's metadata |
-| `PATCH` | `/projects/:projectId` | Update the project name |
+| `PATCH` | [`/projects/:projectId`](/content-api/update-project) | Update the project name |
 | `GET` | [`/projects/:projectId/pages`](/content-api/list-pages) | List page assignments |
 | `POST` | [`/projects/:projectId/pages`](/content-api/create-page) | Create a page (`CUSTOM` or a resource-backed template override) |
 | `POST` | [`/projects/:projectId/template-assignments/:pageId`](/content-api/assign-template-resources) | Assign many resources to one shared template page |
-| `DELETE` | `/projects/:projectId/pages` | Bulk-delete pages (by ids or handles) |
+| `DELETE` | [`/projects/:projectId/pages`](/content-api/delete-pages) | Bulk-delete pages (by ids or handles) |
 | `GET` | [`/projects/:projectId/pages/:type/:handle...`](/content-api/get-page) | Get page content |
 | `PATCH` | [`/projects/:projectId/pages/:type/:handle...`](/content-api/update-page) | Update page content (merge item data, create items, relink children) |
 | `GET` | [`/projects/:projectId/theme-settings`](/content-api/get-theme-settings) | Get theme settings |
-| `PATCH` | `/projects/:projectId/theme-settings` | Merge top-level theme settings keys |
+| `PATCH` | [`/projects/:projectId/theme-settings`](/content-api/update-theme-settings) | Merge top-level theme settings keys |
 | `GET` | [`/projects/:projectId/languages`](/content-api/list-languages) | List configured locales |
 | `GET` | `/openapi.json` | OpenAPI 3.1 specification |
+
+The separate public discovery API exposes [`GET /api/public/v1/projects/:projectId/custom-pages`](/content-api/public-custom-pages) for published custom-page sitemaps and crawlers. It does not require a Content API key.
 
 All write endpoints also accept `POST` with the same body, for clients and
 proxies that strip `PATCH`/`DELETE` bodies. Full request/response schemas live
@@ -205,6 +207,9 @@ Every authenticated API request counts toward your plan's usage quota. API hits 
   <Step title="Render in your app">
     Use the returned `items` array to render page sections in any frontend framework.
   </Step>
+  <Step title="Make a controlled update">
+    Read the current resource, send the smallest supported patch, and fetch it again to verify the result. For destructive operations, resolve and confirm the exact targets first.
+  </Step>
 </Steps>
 
 ## TypeScript example
@@ -247,5 +252,11 @@ console.log(page.items, customPage.items) // Arrays of section components
   </Card>
   <Card title="Get Theme Settings" icon="palette" href="/content-api/get-theme-settings">
     Retrieve theme design tokens and configuration
+  </Card>
+  <Card title="Update Page" icon="pen" href="/content-api/update-page">
+    Merge component data and create or relink items
+  </Card>
+  <Card title="Update Theme Settings" icon="sliders" href="/content-api/update-theme-settings">
+    Safely merge global project settings
   </Card>
 </CardGroup>

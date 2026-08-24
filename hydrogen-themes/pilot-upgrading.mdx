@@ -1,0 +1,175 @@
+---
+title: "Upgrading Pilot"
+description: "Safely apply Pilot releases through v2026.7.28 to a customized Shopify Hydrogen storefront"
+published: true
+---
+
+# Upgrading Pilot
+
+Pilot is a starter theme, not a package that replaces your application files automatically. Most stores customize their fork, so upgrades should be applied as reviewed source changes.
+
+<Note>
+  This guide covers the releases from `v2026.4.10` through `v2026.7.28`. Review the complete [Pilot release history](https://github.com/Weaverse/pilot/releases) when upgrading from an older version.
+</Note>
+
+## Before upgrading
+
+1. Record the Pilot tag or commit your project started from.
+2. Commit or otherwise preserve your current work.
+3. Compare your current base tag with the target release.
+4. Separate dependency/configuration changes from feature changes.
+5. Apply the upgrade on a branch and test against a non-production storefront first.
+
+Do not replace the whole `app` directory. Pilot upgrades frequently touch cart state, route loaders, theme schemas, generated types, and section structure that customized projects also modify.
+
+## Target baseline: `v2026.7.28`
+
+| Dependency/tool | Target |
+|---|---|
+| Node.js | `>=22.12.0` |
+| Hydrogen | `2026.4.4` |
+| `@weaverse/hydrogen` | `5.19.2` |
+| React / React DOM | `19.2.8` |
+| Vite | `8.1.5` |
+| TypeScript | `6.0.3` |
+| Swiper | v14 |
+| Biome | `2.5.5` |
+
+Swiper 14 requires Chrome/Edge 110+, Firefox 110+, and Safari/iOS 16.4+.
+
+## Release-by-release changes
+
+### `v2026.7.28`
+
+**Features**
+
+- Instant optimistic add-to-cart drawer.
+- New Spacer section with responsive height and background settings.
+
+**Behavior and fixes**
+
+- Cart-line identity is preserved after add-to-cart.
+- Optimistic cart counts no longer overshoot.
+- Cart-note clearing and spinner sizing are corrected.
+- Cart state is split into baseline, synchronization, and optimistic modules.
+- React Router v8 future flags `v8_passThroughRequests` and `v8_trailingSlashAwareDataRequests` are enabled.
+
+**Upgrade checks**
+
+- Reconcile customized cart drawers and cart stores carefully; do not run both old and new optimistic state paths.
+- Register the Spacer section if you maintain a custom component registry.
+- Test add, remove, quantity, note, and checkout transitions.
+- Verify the new browser baseline with your analytics and support policy.
+
+### `v2026.7.22`
+
+Adds the optional installable mobile app/PWA settings group:
+
+- Merchant-generated `/manifest.webmanifest`.
+- Android install prompt and optional iOS installation hint.
+- Whitelist-only service worker for hashed assets and Shopify CDN images.
+- No interception of HTML, cart, account, or checkout requests.
+
+Follow [Installable Mobile App](/features/mobile-app-pwa) instead of copying only the service worker; the feature also requires routes, theme settings, registration, icons, and CSP-aware behavior.
+
+### `v2026.6.24`
+
+- Rewrites the project README around agent-first setup and Weaverse MCP.
+- Explicitly configures React Router v8 future flags to silence development warnings while preserving Hydrogen preset flags.
+
+If upgrading all the way to `v2026.7.28`, use the later future-flag state rather than stopping at the `v2026.6.24` opt-out configuration.
+
+### `v2026.6.11`
+
+- Requires Node.js 22.12+ for Shopify CLI 4.
+- Moves to Hydrogen `2026.4.3`, React Router `7.16.0`, and Weaverse Hydrogen `5.15.x` at that release point.
+- Adds custom-page SEO and sitemap integration.
+- Adds ScrollReveal transition state.
+- Fixes full-width Hero Video cover behavior.
+
+Custom storefronts should merge the sitemap loader and SEO metadata deliberately, especially when they already generate Shopify or third-party sitemap entries.
+
+### `v2026.5.18`
+
+- Adds multiple language variants within a country.
+- Groups the country selector by country with stacked language choices.
+- Expands and sorts market locales.
+- Updates Hero Video transition and responsive spacing behavior.
+- Fixes stale checkout totals after cart-line removal.
+- Moves Hero Video to `react-player` v3 and Vite 8-compatible module behavior.
+
+Test locale-prefixed navigation, selected market persistence, cart currency, and checkout after merging this release.
+
+### `v2026.5.4`
+
+Prevents Shopify Analytics from redefining a non-configurable `window.Shopify` created by Shopify's account web component. Preserve the initialization order in `<head>` if your storefront uses both Customer Account components and Hydrogen analytics.
+
+### `v2026.4.20` and `v2026.4.18`
+
+- Adds scroll arrows and smooth scrolling to swimlanes.
+- Expands Hero Video content/playback controls and Slideshow navigation options.
+- Converts headings to semantic `h1`–`h6` elements without losing visual styles.
+- Refines typography, section gaps, cart layout, video sizing, and browser guards.
+
+Review CSS custom properties and heading markup if your project copied older section components.
+
+### `v2026.4.15` and `v2026.4.10`
+
+- Adds sticky add-to-cart and Buy Now options.
+- Adds collection loaded/total product counts and content-position controls.
+- Adds sticky product media, footer newsletter width, and quick-shop media placeholders.
+- Moves product-grid count state to Zustand.
+- Replaces deprecated Twitter sharing with X sharing.
+- Removes redundant ref declarations for React 19 compatibility.
+
+## Recommended upgrade sequence
+
+<Steps>
+  <Step title="Update runtime and package metadata">
+    Set Node.js to 22.12+ and merge dependency changes. Run `npm install` to update the lockfile rather than hand-editing it.
+  </Step>
+  <Step title="Merge configuration">
+    Compare `react-router.config.ts`, `vite.config.ts`, `tsconfig.json`, `codegen.ts`, CSP helpers, environment types, and deployment workflows.
+  </Step>
+  <Step title="Merge shared state and routes">
+    Apply cart, context, sitemap, SEO, localization, account, and PWA route changes before section UI that depends on them.
+  </Step>
+  <Step title="Merge sections and schemas">
+    Compare each customized section. Preserve merchant-facing schema names and defaults unless a migration is intentional.
+  </Step>
+  <Step title="Regenerate and validate">
+    Run code generation, type checking, Biome, the production build, route checks, and Playwright tests.
+  </Step>
+  <Step title="Verify Studio and commerce flows">
+    Test component selection, saved content, locales, product variants, cart operations, accounts, analytics, checkout, SEO, and the PWA when enabled.
+  </Step>
+</Steps>
+
+## Validation commands
+
+```bash
+npm run codegen
+npm run typecheck
+npm run biome
+npm run build
+npm run routes-check
+npm run e2e
+```
+
+## Common mistakes
+
+- Updating `package.json` without regenerating the lockfile.
+- Copying a new section without registering it.
+- Copying schema changes without considering already saved Studio data.
+- Enabling a PWA service worker without the matching manifest, route, theme settings, and cache exclusions.
+- Replacing customized cart modules wholesale and losing store-specific behavior.
+- Keeping the `v2026.6.24` future-flag opt-out after otherwise upgrading to `v2026.7.28`.
+
+<CardGroup cols={2}>
+  <Card title="Pilot overview" icon="rocket" href="/hydrogen-themes/pilot-theme-overview">
+    Review the target architecture and dependencies.
+  </Card>
+  <Card title="Pilot sections" icon="grid" href="/hydrogen-themes/pilot-theme-sections">
+    Review the section inventory and schema-sensitive changes.
+  </Card>
+</CardGroup>

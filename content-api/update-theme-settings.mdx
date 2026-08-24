@@ -1,0 +1,67 @@
+---
+title: "Update Theme Settings"
+description: "Merge global theme settings into a Weaverse project through the Content API"
+published: true
+---
+
+# Update Theme Settings
+
+```
+PATCH /api/v1/content/projects/:projectId/theme-settings
+```
+
+Updates global theme settings for a project. Send only the top-level keys you want to change.
+
+<Warning>
+  The API performs a shallow merge at the top level. If you send a nested object, that object replaces the existing value for its top-level key. Fetch the current settings first when you need to preserve sibling values.
+</Warning>
+
+Before applying the change, Weaverse saves a restorable theme version. The updated settings use the same cache-invalidation path as a Studio save and can affect the live storefront immediately.
+
+## Request body
+
+```json
+{
+  "theme": {
+    "primaryColor": "#246aff",
+    "pageWidth": 1440
+  }
+}
+```
+
+## Example
+
+```bash
+curl -X PATCH \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  "https://studio.weaverse.io/api/v1/content/projects/PROJECT_ID/theme-settings" \
+  -d '{"theme":{"primaryColor":"#246aff","pageWidth":1440}}'
+```
+
+Clients that cannot send `PATCH` may send `POST` to the same URL with the same body.
+
+## Safe update pattern
+
+1. [Get the current theme settings](/content-api/get-theme-settings).
+2. Prepare the smallest top-level patch that represents the intended change.
+3. Confirm nested objects contain every sibling value that must be preserved.
+4. Send the update and fetch the settings again to verify the result.
+
+## Errors
+
+| Code | Status | When |
+|---|---:|---|
+| `INVALID_PARAMS` | 400 | The `theme` object is missing or invalid |
+| `UNAUTHORIZED` | 401 | API key is missing or invalid |
+| `FORBIDDEN` | 403 | The key cannot access this project |
+| `PROJECT_NOT_FOUND` | 404 | Project does not exist or was deleted |
+
+<CardGroup cols={2}>
+  <Card title="Get Theme Settings" icon="palette" href="/content-api/get-theme-settings">
+    Read the current values before constructing an update.
+  </Card>
+  <Card title="Content API overview" icon="book" href="/content-api/overview">
+    Review authentication and common write behavior.
+  </Card>
+</CardGroup>

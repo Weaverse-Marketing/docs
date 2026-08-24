@@ -1,79 +1,86 @@
 ---
 title: "Navigating Weaverse Studio"
-description: "Understand the main areas of Weaverse Studio so you can edit pages, preview storefront changes, and manage project settings efficiently."
+description: "Understand the 2026 Weaverse Studio workspace, page navigation, editing panels, preview canvas, and project controls"
 published: true
 ---
 
-Weaverse Studio is the visual workspace for building and customizing Shopify Hydrogen storefronts. The editor is organized around a page selector, a page outline, a live preview canvas, an inspector, and project-level settings.
+# Navigating Weaverse Studio
+
+Weaverse Studio is the visual workspace for editing a Hydrogen storefront. The 2026 interface organizes work around page context in the top bar, structure and history on the left, a browser-style live preview in the center, and settings on the right.
 
 ![Weaverse Studio with a Hydrogen storefront preview and editing controls](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/weaverse_studio_loaded_2.webp?v=1755078650)
 
-## Top Bar: Page and Store Context
+## Top bar
 
-The top bar helps you choose what you are editing and which storefront context you are previewing.
+- **Unified page search:** Find pages across Homepage, Product, Collection, Page, Blog, Article, and Custom Page groups.
+- **Page and template context:** See the active page or shared/custom template and manage assignments where supported.
+- **Locale:** Switch the market or language whose content you are editing.
+- **Store URL tabs:** Move between configured storefront contexts without losing the current project.
+- **Save and publish:** Commit the current session draft and publish it when ready. See [Saving, Publishing, and History](/studio-guide/saving-publishing-history).
+- **Studio settings:** Open preferences, project details, activity, and related workspace controls.
 
-- **Page search and selector:** Find the page you want to edit. Pages are grouped by type, such as Homepage, Product pages, Collection pages, standard Pages, and Custom Pages.
-- **Locale or language controls:** If your project supports multiple locales or the Translation Manager, use these controls to switch language context or open translation workflows.
-- **Store URL tabs:** Switch between configured storefront URLs when a project has multiple preview contexts.
-- **Save or publish action:** Save the current page changes so they can be used by the connected storefront.
+<Warning>
+  Page, template, and locale form one editing context. Confirm all three before changing content, restoring history, or assigning a template.
+</Warning>
 
-## Left Sidebar: Outline, Sections, and History
+## Left sidebar
 
-The left sidebar shows the structure and editing history for the current page.
+### Page Outline
 
-![Weaverse Studio Page Outline](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/pageoutline.webp?v=1743413723)
+- Select an item to highlight it in the canvas and open its inspector.
+- Drag an item to reorder it within an allowed parent.
+- Add sections from the components registered by the Hydrogen theme.
+- Duplicate, hide, show, or delete items when those actions are available.
+- Expand nested items to understand the component hierarchy.
 
-- **Page Outline:** A tree view of the sections, blocks, and elements on the page.
-- **Selection:** Click an item in the outline to highlight it on the canvas and open its settings in the Inspector.
-- **Reordering:** Drag items in the outline to change their order on the page.
-- **Visibility:** Hide or show a section while working on the page.
-- **Delete:** Remove a section or element from the page.
-- **Add Section:** Open the component library and add a new section from the components registered in your Hydrogen theme.
-- **Version History:** Review previous saved versions and restore content when needed.
+If an outline item exists but cannot be detected in the preview, Studio displays a detectability warning. The section's root DOM element must receive its Weaverse props and `ref`. See [Component Not Selectable](/troubleshooting/component-not-selectable).
 
-## Preview Canvas
+### Version History
 
-The canvas is the live, interactive preview of the page you are editing. Click a visible section on the canvas to select it, then edit its content, settings, or styles in the Inspector.
+Version History lives in the left sidebar. Use it to inspect prior saved versions and restore the intended page revision. Restores remain associated with the current page; always verify page and locale before confirming.
 
-The redesigned Studio workspace also includes a browser-style preview bar:
+## Preview canvas and browser bar
 
-- **Preview URL selector:** Choose or update the storefront URL Studio should load.
-- **Preview status:** See whether the local or hosted storefront is connected.
-- **Performance signals:** Review inline performance scores when they are available.
-- **Responsive preview:** Switch between desktop, tablet, and mobile layouts to check the page at different sizes.
+The canvas renders the connected storefront rather than a separate approximation of it.
 
-## Right Panel: Inspector
+- Click a visible component to select the matching outline item.
+- Use desktop, tablet, and mobile widths to review responsive behavior.
+- Navigate with the browser-style URL bar when testing another storefront path.
+- Choose among configured preview URLs.
+- Review connection status and inline performance signals when available.
 
-The Inspector panel is where you configure the selected section, block, or element.
+When the preview has no editable Weaverse content, Studio distinguishes that state from a disconnected storefront and directs you to the appropriate setup or preview action. See [Managing Previews](/studio-guide/managing-previews).
 
-![Weaverse Studio Component Inspector](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/component-inspector.webp?v=1743413912)
-![Weaverse Studio Theme Settings Inspector](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/theme-setting.webp?v=1743409893)
+## Inspector
 
-- **Settings:** Edit component-specific content and behavior. These fields come from the component's `schema.settings` definition, such as text, image, product, collection, layout, and toggle controls.
-- **Style:** Adjust visual properties such as spacing, alignment, color, background, borders, and responsive layout options.
-- **General:** Use common actions such as visibility, duplicate, and delete.
-- **Theme Settings:** Edit global theme settings defined in `~/weaverse/schema.server.ts`, such as brand colors, typography, layout defaults, and reusable theme content.
+- **Settings:** Content and behavior declared by the component's `schema.settings`.
+- **Style:** Spacing, alignment, colors, backgrounds, borders, and responsive presentation.
+- **General actions:** Visibility, duplication, deletion, and related item actions.
+- **Theme Settings:** Project-wide settings declared by `themeSchema`, including colors, typography, layout, and PWA configuration.
 
-## Studio Settings
+Resource and URL pickers can search across supported Weaverse pages and Shopify resources. If a picker appears stale, close and reopen it after saving the current selection.
 
-Studio settings are available from the settings popover in the workspace. This popover consolidates project preferences, project details, and recent activity.
+## Editing efficiently
 
-![Weaverse Studio Project Settings](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/project-setting.webp?v=1743413912)
-![Weaverse Studio Theme Info](https://cdn.shopify.com/s/files/1/0838/0052/3057/files/theme-info.webp?v=1743410159)
+- Use the [keyboard shortcuts guide](/studio-guide/keyboard-shortcuts) for navigation and common editor actions.
+- Copy styling from one compatible element and paste it onto another instead of rebuilding the same appearance.
+- Keep content changes in the session draft until the logical edit is complete.
+- Check responsive widths before saving and publishing.
+- Use project backups before broad content restructuring.
 
-- **Preferences:** Manage editor preferences and workspace behavior.
-- **Project:** View or update project-level settings, including the Project ID and API key used in your Hydrogen `.env` file.
-- **Preview URL:** Configure the storefront URL Studio should load, such as `http://localhost:3456` during local development.
-- **Domains:** Configure custom domains when your project uses Weaverse-hosted storefront features.
-- **Activity:** Review recent project activity and editing history.
-- **Theme:** View theme information such as name, author, and version from `themeSchema.info` in `~/weaverse/schema.server.ts`.
+## Common workflow
 
-## Common Editing Flow
+<Steps>
+  <Step title="Confirm context">Select the page, template assignment, locale, and preview URL.</Step>
+  <Step title="Edit">Select or add a component, then update its content and styles in the Inspector.</Step>
+  <Step title="Review">Check the outline, responsive previews, links, product/resource selections, and storefront behavior.</Step>
+  <Step title="Save">Commit the session draft and resolve any specific save error Studio reports.</Step>
+  <Step title="Publish">Publish the saved version when it is ready for the connected live storefront.</Step>
+</Steps>
 
-1. Select a page from the top bar.
-2. Add or select a section from the left sidebar or preview canvas.
-3. Edit content and styles in the Inspector.
-4. Check desktop, tablet, and mobile previews.
-5. Save your changes.
-
-Once you know where these controls live, Weaverse Studio becomes a fast loop: choose a page, edit visually, preview the result, and save.
+<CardGroup cols={2}>
+  <Card title="Saving and publishing" icon="cloud-arrow-up" href="/studio-guide/saving-publishing-history">Understand drafts, versions, publishing, history, scheduling, and backups.</Card>
+  <Card title="Managing previews" icon="desktop" href="/studio-guide/managing-previews">Configure and recover local or hosted storefront previews.</Card>
+  <Card title="Keyboard shortcuts" icon="keyboard" href="/studio-guide/keyboard-shortcuts">Navigate and edit without reaching for the mouse.</Card>
+  <Card title="Component not selectable" icon="triangle-exclamation" href="/troubleshooting/component-not-selectable">Fix DOM detectability and root-prop issues.</Card>
+</CardGroup>

@@ -1,98 +1,219 @@
 ---
 title: "Pilot - Shopify Hydrogen Starter Theme"
-description: "Elevate your Shopify Headless storefront with Pilot, the robust and versatile starter theme by Weaverse."
+description: "Current architecture, features, requirements, and setup guidance for the Pilot Shopify Hydrogen theme"
 published: true
 ---
 
-Meet the [Pilot theme](https://pilot.weaverse.dev/), a comprehensive starter theme from Weaverse designed to be a solid foundation for your Shopify Hydrogen storefront. Think of Pilot as fulfilling a similar foundational role for Hydrogen projects as the Dawn theme does for Shopify Online Store 2.0.
+# Pilot
 
-Pilot builds upon Shopify's [Hydrogen Demo Store](https://github.com/Shopify/hydrogen/tree/main/templates/demo-store) and is tightly integrated with Weaverse. This integration streamlines theme development and customization, promoting best practices and ensuring high performance.
+Pilot is Weaverse's production-ready Shopify Hydrogen theme. It combines React Router, Hydrogen, and Weaverse Studio so developers retain a version-controlled storefront while merchants edit page structure and content visually.
 
-[![Pilot Theme Preview](https://cdn.shopify.com/s/files/1/0728/0410/6547/files/landing_hero.webp?v=1703568247)](https://pilot.weaverse.dev/)
+<Note>
+  This guide tracks Pilot through [`v2026.7.28`](https://github.com/Weaverse/pilot/releases/tag/v2026.7.28). If your project was created from an older tag, review [Upgrading Pilot](/hydrogen-themes/pilot-upgrading) before copying individual files or dependency versions.
+</Note>
 
-## Key Features
+## Current baseline
 
----
+| Area | Pilot `v2026.7.28` |
+|---|---|
+| Node.js | `>=22.12.0` |
+| Hydrogen | `2026.4.4` |
+| Weaverse Hydrogen | `5.19.2` |
+| React | `19.2.8` |
+| React Router | React Router 7 with selected v8 future flags enabled |
+| Vite | `8.1.5` |
+| TypeScript | `6.0.3` |
+| Tailwind CSS | v4 |
+| Swiper | v14 |
+| Formatting and linting | Biome `2.5.5` |
 
-*   **Instant Live Preview:** See your theme modifications immediately in Weaverse Studio.
-*   **Customizable Component Schema:** Define configurable settings for your components within Weaverse Studio.
-*   **Component-Level Data Loading:** Utilize Remix-style loaders within individual components to fetch data efficiently from the Shopify Storefront API or third-party sources.
-*   **Tailwind CSS Integration:** Leverage the utility-first power of Tailwind CSS for rapid UI development.
-*   **Easy Shopify Resource Selection:** Conveniently select products, collections, pages, blogs, articles, and more directly within the editor.
-*   **Multi-Market & Language Ready:** Built to support sales across different markets and languages.
-*   **Global Theme Settings:** Easily customize site-wide elements like colors, fonts, and layout options.
+Swiper 14 raises the storefront browser baseline to Chrome/Edge 110+, Firefox 110+, and Safari/iOS 16.4+.
 
-## Getting Started
+## What Pilot includes
 
----
+### Storefront foundation
 
-The Pilot theme is open-source and available on [GitHub](https://github.com/weaverse/pilot). You can deploy it directly to platforms like Oxygen or Vercel, or clone the repository to your local machine for development and customization.
+- React Router 7 routes, SSR, streaming, and route loaders.
+- Shopify Hydrogen on Oxygen, plus Vercel-compatible deployment.
+- Strict TypeScript, Storefront GraphQL code generation, Tailwind CSS 4, Radix UI, and Biome.
+- Responsive image, carousel, accessibility, SEO, analytics, and localization patterns.
+- Playwright end-to-end coverage and focused cart correctness tests.
 
-## Available Sections
+### Commerce
 
----
+- Predictive search, optimistic cart state, cart notes, checkout, and analytics.
+- Instant add-to-cart drawer with staged optimistic line items.
+- Customer Account API authentication and account pages.
+- Shopify Markets, multiple language variants per country, and localized URLs.
+- Combined Listings and product-bundle support.
+- Product and collection templates, related content, quick shop, sticky add-to-cart, and Buy Now options.
 
-Pilot includes a variety of pre-built sections to help you build pages quickly:
+### Integrations
 
-*   Image with Text
-*   Image Gallery
-*   Featured Product
-*   Featured Collection
-*   Related Products
-*   Blog Posts
-*   Rich Text
-*   Newsletter Form
-*   Map
-*   Video Embed
-*   Testimonials
-*   Custom HTML
-*   Metaobject Demo
+- Judge.me reviews.
+- Klaviyo newsletter and contact flows.
+- Shopify Inbox chat.
+- Content Security Policy helpers for Studio and third-party services.
 
-## Global Theme Settings
+### Installable mobile app
 
----
+Pilot can expose the storefront as an installable PWA. Enable **Mobile app (PWA)** in Theme Settings to generate a merchant-specific manifest, install prompts, and a whitelist-only service worker. HTML, cart, account, and checkout requests are never intercepted.
 
-Pilot offers extensive global theme settings for site-wide customization. Learn more about configuring these options in our [Global Theme Settings](/development-guide/styling-theming#global-theme-settings) guide.
+See [Installable Mobile App](/features/mobile-app-pwa) for configuration and caching behavior.
 
-## Using Metaobjects with Pilot
+## Start a project
 
----
+<Tabs>
+  <Tab title="AI coding agent">
+    Install the Weaverse Shopify Hydrogen skills, then ask the agent to run the setup workflow:
 
-Weaverse integrates a metaobject picker, allowing you to easily select and display Shopify metaobjects within your theme. Follow these steps to set up and use metaobjects with Pilot:
+    ```bash
+    npx skills add Weaverse/shopify-hydrogen-skills
+    ```
 
-### 1. Define Your Metaobject Structure in Shopify
+    The setup starts against bundled demo data, verifies a storefront at `http://localhost:3456`, and then helps connect your Shopify store and Weaverse project.
+  </Tab>
+  <Tab title="Weaverse Studio">
+    1. Install the Weaverse Hydrogen Customizer from the Shopify App Store.
+    2. Create a Hydrogen storefront and choose Pilot.
+    3. Copy the generated CLI command or agent prompt.
+    4. Open the local preview in Studio and begin editing.
+  </Tab>
+  <Tab title="Clone Pilot">
+    ```bash
+    git clone https://github.com/Weaverse/pilot my-storefront
+    cd my-storefront
+    cp .env.example .env
+    npm install
+    npm run dev
+    ```
 
-1.  Navigate to **Settings > Custom data** in your Shopify Admin.
-2.  Under **Metaobjects**, click **Add definition**.
-3.  Give your metaobject definition a clear name (e.g., "Team Member Profile").
-4.  Add the necessary fields using **Add field**. Each field has specific types and validation options. For a team member profile, you might add:
-    *   `avatar`: File type (restrict to images).
-    *   `name`: Single line text.
-    *   `title`: Single line text.
-5.  Configure any additional options like access controls.
-6.  **Save** the definition.
+    The repository's demo environment lets the storefront boot before you replace values with your own Shopify and Weaverse credentials.
+  </Tab>
+</Tabs>
 
-    *Example Setup:*
-    [![Metaobject definition example](https://cdn.shopify.com/s/files/1/0728/0410/6547/files/metaobject_definition.png)](https://cdn.shopify.com/s/files/1/0728/0410/6547/files/metaobject_definition.png)
+## Minimum environment
 
-### 2. Create Metaobject Entries in Shopify
+| Variable | Purpose |
+|---|---|
+| `SESSION_SECRET` | Signs session cookies |
+| `PUBLIC_STORE_DOMAIN` | Shopify store domain |
+| `PUBLIC_STOREFRONT_API_TOKEN` | Storefront API access |
+| `WEAVERSE_PROJECT_ID` | Connects the storefront to Studio content |
 
-1.  Navigate to **Content > Metaobjects** in your Shopify Admin.
-2.  Click **Add entry** and select the definition you just created (e.g., "Team Member Profile").
-3.  Fill in the content for each field (upload an avatar, enter name and title).
-4.  **Save** the entry.
-5.  Repeat this process to add more entries (e.g., for each team member).
+Optional variables enable customer accounts, checkout-domain overrides, analytics, reviews, email, and other integrations. See [Environment Variables](/development-guide/environment-setup).
 
-    *Example Entry:*
-    [![Metaobject entry example](https://cdn.shopify.com/s/files/1/0728/0410/6547/files/Screenshot_2024-01-11_at_14.23.52.png?v=1704968599)](https://cdn.shopify.com/s/files/1/0728/0410/6547/files/Screenshot_2024-01-11_at_14.23.52.png?v=1704968599)
+## Project structure
 
-### 3. Display Metaobjects in the Pilot Theme
+```text
+app/
+├── .server/       # Server context, sessions, and Weaverse client
+├── components/    # Reusable storefront components
+├── graphql/       # Queries and fragments
+├── hooks/         # Shared React hooks
+├── routes/        # Locale-aware React Router routes
+├── sections/      # Weaverse-editable sections
+├── styles/        # Tailwind theme, utilities, and keyframes
+├── utils/         # Storefront helpers
+└── weaverse/      # Component registry, theme schema, and rendering root
+```
 
-1.  Open your page in Weaverse Studio.
-2.  Click **Add section** in the Page Outline (left panel).
-3.  Select the **Metaobject demo** section (or another section you've configured to use metaobjects).
-4.  In the Settings panel (right panel), use the metaobject picker input field to select the specific metaobject entry you want to display.
-5.  Observe the changes in the live preview.
+Important root files include `AGENTS.md`, `react-router.config.ts`, `vite.config.ts`, `codegen.ts`, `biome.json`, and `package.json`.
 
-    *Video Demonstration:*
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BEf6jfjloiE?rel=0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## Load and render a page
+
+Load Weaverse content in parallel with Shopify data:
+
+```tsx
+import type { LoaderFunctionArgs } from 'react-router';
+
+export async function loader({ context }: LoaderFunctionArgs) {
+  const { storefront, weaverse } = context;
+  const [weaverseData, { shop }] = await Promise.all([
+    weaverse.loadPage({ type: 'INDEX' }),
+    storefront.query(SHOP_QUERY),
+  ]);
+
+  return { weaverseData, shop };
+}
+```
+
+Render the registered component tree with `WeaverseContent`:
+
+```tsx
+import { WeaverseContent } from '~/weaverse';
+
+export default function Homepage() {
+  return <WeaverseContent />;
+}
+```
+
+## Create a React 19 section
+
+All Weaverse sections must extend `HydrogenComponentProps`, accept `ref`, and pass the ref and remaining props to their root DOM element.
+
+```tsx
+import {
+  createSchema,
+  type HydrogenComponentProps,
+} from '@weaverse/hydrogen';
+
+interface VideoProps extends HydrogenComponentProps {
+  ref: React.Ref<HTMLElement>;
+  heading: string;
+  videoUrl: string;
+}
+
+export default function Video({ ref, heading, videoUrl, ...rest }: VideoProps) {
+  return (
+    <section ref={ref} {...rest}>
+      <h2>{heading}</h2>
+      <iframe src={videoUrl} title="Video" allowFullScreen />
+    </section>
+  );
+}
+
+export const schema = createSchema({
+  type: 'video',
+  title: 'Video',
+  settings: [
+    {
+      group: 'Video',
+      inputs: [
+        { type: 'text', name: 'heading', label: 'Heading' },
+        { type: 'text', name: 'videoUrl', label: 'Video URL' },
+      ],
+    },
+  ],
+});
+```
+
+Existing `forwardRef` components remain compatible, but React 19 function components are the current Pilot pattern.
+
+## Commands
+
+```bash
+npm run dev          # Local server and codegen on port 3456
+npm run build        # Production Hydrogen build
+npm run preview      # Preview the production bundle
+npm run typecheck    # TypeScript validation
+npm run biome:fix    # Lint and format
+npm run e2e          # Playwright tests
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Pilot Sections" icon="grid" href="/hydrogen-themes/pilot-theme-sections">
+    Browse the current section inventory and important settings.
+  </Card>
+  <Card title="Upgrade Pilot" icon="arrow-up" href="/hydrogen-themes/pilot-upgrading">
+    Apply releases through v2026.7.28 safely.
+  </Card>
+  <Card title="Customize fonts" icon="font" href="/hydrogen-themes/pilot-theme-customization">
+    Update Pilot typography with Fontsource, Google Fonts, or custom files.
+  </Card>
+  <Card title="GitHub repository" icon="github" href="https://github.com/Weaverse/pilot">
+    Inspect the latest source and release history.
+  </Card>
+</CardGroup>

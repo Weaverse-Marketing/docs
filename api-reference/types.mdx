@@ -372,11 +372,11 @@ export { schema, loader };
 
 ## Type Extensions
 
-Weaverse Hydrogen extends several types from Remix Oxygen and Shopify Hydrogen:
+Weaverse Hydrogen extends React Router's application context and Shopify Hydrogen's environment types:
 
 ```typescript
 // Extend AppLoadContext with the weaverse client
-declare module '@shopify/remix-oxygen' {
+declare module 'react-router' {
   export interface AppLoadContext {
     weaverse: WeaverseClient;
   }

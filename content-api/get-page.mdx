@@ -37,8 +37,13 @@ Returns the full page content including all component items. This is the primary
 | `locale` | string | `""` | Locale code for localized content (e.g., `en-us`, `fr-fr`) |
 | `format` | `weaverse` \| `portable-text` | `weaverse` | Output format. See [Portable Text format](#portable-text-format) below. |
 | `meta` | boolean | `false` | When `true` *and* `format=portable-text`, each block carries a `_weaverse: { id, schemaVersion }` field for round-tripping back to the original Weaverse item. |
+| `includeDefaults` | boolean | `false` | When `true`, component settings that were never explicitly changed are filled with the defaults declared by their registered schemas. |
 
 The format can also be requested via the `Accept` header (`application/portable-text+json`). The query parameter takes precedence when both are present.
+
+<Tip>
+  Use `includeDefaults=true` when an external renderer or AI workflow needs a complete component configuration. Leave it off when you need to distinguish explicitly saved values from schema defaults.
+</Tip>
 
 <Warning>
   **Always pass `locale` for localized projects.** Page content is stored per

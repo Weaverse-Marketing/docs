@@ -51,7 +51,7 @@ Create a new file in your Hydrogen project at `app/routes/($locale).item.$produc
 
 -   `($locale)`: Optional, includes standard localization if your project uses it.
 -   `item`: This is our custom URL segment, replacing `products`.
--   `$productHandle`: This is the dynamic segment Remix captures from the URL (e.g., `classic-varsity-jacket`).
+-   `$productHandle`: This is the dynamic segment React Router captures from the URL (e.g., `classic-varsity-jacket`).
 
 ### Step 2: Implement the Loader Function
 
@@ -59,7 +59,7 @@ Inside `app/routes/($locale).item.$productHandle.tsx`, implement the `loader` fu
 
 ```tsx
 // app/routes/($locale).item.$productHandle.tsx
-import { json, type LoaderFunctionArgs } from "@shopify/remix-oxygen";
+import type { LoaderFunctionArgs } from "react-router";
 import { getSeoMeta } from "@shopify/hydrogen";
 import { WeaverseContent } from "~/weaverse";
 
@@ -121,12 +121,12 @@ export async function loader({ params, context, request }: LoaderFunctionArgs) {
     });
 
     // 5. Return all data needed by the component
-    return json({
+    return {
       weaverseData,
       product: shopifyProductData.product,
       seo,
       // Add other data as needed
-    });
+    };
 
   } catch (error) {
     console.error(`Error loading data for custom route /item/${productHandle}:`, error);
@@ -156,7 +156,7 @@ The component itself remains simple, primarily rendering `<WeaverseContent />` w
 ```tsx
 // app/routes/($locale).item.$productHandle.tsx (continued)
 
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Analytics } from "@shopify/hydrogen"; // For analytics
 
 export default function CustomProductRoute() {

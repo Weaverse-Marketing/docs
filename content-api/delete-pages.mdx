@@ -1,0 +1,69 @@
+---
+title: "Delete Pages"
+description: "Soft-delete multiple Weaverse pages by ID or by handle through the Content API"
+published: true
+---
+
+# Delete Pages
+
+```
+DELETE /api/v1/content/projects/:projectId/pages
+```
+
+Soft-deletes up to 500 pages in one request. Identify pages either by page ID or by handle and type.
+
+<Warning>
+  Deleting content is a consequential write. Resolve the intended targets with [List Pages](/content-api/list-pages), show them to the user when operating through an agent, and require confirmation before sending the request.
+</Warning>
+
+## Delete by page IDs
+
+```json
+{
+  "pageIds": ["PAGE_ID_1", "PAGE_ID_2"]
+}
+```
+
+## Delete by handles
+
+```json
+{
+  "type": "CUSTOM",
+  "handles": ["pages/old-campaign", "pages/expired-offer"],
+  "locale": "en-us"
+}
+```
+
+For custom pages, use the exact handle returned by [List Pages](/content-api/list-pages), including any `/` characters.
+
+## Example
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  "https://studio.weaverse.io/api/v1/content/projects/PROJECT_ID/pages" \
+  -d '{"type":"CUSTOM","handles":["pages/old-campaign"],"locale":"en-us"}'
+```
+
+Clients or proxies that strip `DELETE` request bodies may send `POST` to the same URL with the same delete body.
+
+## Safety rules
+
+- Do not combine `pageIds` and `handles` in one request.
+- When deleting by handle, include `type` and the intended `locale`.
+- Keep batches small enough to review, even though the endpoint accepts up to 500 pages.
+- A page outside the authenticated shop or project is never modified.
+
+## Errors
+
+| Code | Status | When |
+|---|---:|---|
+| `INVALID_PARAMS` | 400 | Targets are missing, mixed, malformed, or exceed the batch limit |
+| `UNAUTHORIZED` | 401 | API key is missing or invalid |
+| `FORBIDDEN` | 403 | The key cannot access this project |
+| `PROJECT_NOT_FOUND` | 404 | Project does not exist or was deleted |
+
+<Card title="List Pages" icon="list" href="/content-api/list-pages">
+  Resolve page IDs, handles, types, and locales before deleting.
+</Card>

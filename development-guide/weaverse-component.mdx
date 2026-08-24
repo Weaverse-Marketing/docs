@@ -73,28 +73,27 @@ Every Weaverse component follows a consistent structure:
 
 1. **Imports**: Import necessary types and utilities from Weaverse and React
 2. **Interface**: Define the component's props interface
-3. **Component**: Create the component (with or without `forwardRef`, see note below)
+3. **Component**: Create a React 19 function component and pass its `ref` and Weaverse props to the root DOM element
 4. **Schema**: Export the schema that defines how the component appears in Weaverse Studio
 5. **Export**: Export the component as default
 
-> **Note about `forwardRef`**: While many examples use `forwardRef`, it's actually optional in Weaverse components. It helps pass the ref to the component's DOM element so that Weaverse Editor can render essential UI elements like overlays and toolbars in the editor. However, if you spread all props to your root DOM element (e.g., `<div {...props}>`), Weaverse will automatically detect the DOM element. Additionally, with React 19, `forwardRef` will become less necessary due to improvements in ref handling.
+> **React 19 refs**: Current Weaverse projects use React 19, where `ref` is available as a regular prop. You do not need `forwardRef`. Always attach `ref` and spread the remaining `HydrogenComponentProps` onto the component's root DOM element so Weaverse Studio can detect and select it. Existing `forwardRef` components remain compatible and can be migrated gradually.
 
 ### Basic Component Template
 
 ```tsx
 import type { HydrogenComponentProps } from '@weaverse/hydrogen';
 import { createSchema } from '@weaverse/hydrogen';
-import { forwardRef } from 'react';  // Optional but recommended for now
+import type { Ref } from 'react';
 
 interface MyComponentProps extends HydrogenComponentProps {
-  // Add your custom props here
   title?: string;
   description?: string;
+  ref: Ref<HTMLElement>;
 }
 
-// Using forwardRef (recommended approach for React 18)
-const MyComponent = forwardRef<HTMLElement, MyComponentProps>((props, ref) => {
-  const { title, description, children, ...rest } = props;
+function MyComponent(props: MyComponentProps) {
+  const { title, description, children, ref, ...rest } = props;
   
   return (
     <section ref={ref} {...rest}>
@@ -103,20 +102,7 @@ const MyComponent = forwardRef<HTMLElement, MyComponentProps>((props, ref) => {
       {children}
     </section>
   );
-});
-
-// Alternative: Without forwardRef (will work if you spread props to root element)
-// function MyComponent(props: MyComponentProps) {
-//   const { title, description, children, ...rest } = props;
-//   
-//   return (
-//     <section {...rest}>  // Make sure to spread remaining props here
-//       {title && <h2>{title}</h2>}
-//       {description && <p>{description}</p>}
-//       {children}
-//     </section>
-//   );
-// }
+}
 
 export let schema = createSchema({
   type: 'my-component',
@@ -146,7 +132,7 @@ export default MyComponent;
 ### Key Elements
 
 1. **HydrogenComponentProps**: Base props interface that all Weaverse components extend
-2. **forwardRef**: Used to properly pass refs through the component tree (optional if props are spread correctly)
+2. **ref and root props**: Pass the React 19 `ref` and remaining Weaverse props to the root DOM element so Studio can identify the component
 3. **type property in schema**: Unique identifier for the component (must be unique across all components)
 4. **settings**: Defines the UI controls in Weaverse Studio
 5. **children prop**: Components can render child components or elements
@@ -156,7 +142,7 @@ export default MyComponent;
 For more complex components, you may need to handle data loading, custom styling, or complex props management:
 
 ```tsx
-import { Await, useLoaderData } from "@remix-run/react";
+import { Await, useLoaderData } from "react-router";
 import { createSchema } from "@weaverse/hydrogen";
 import { Suspense, forwardRef } from "react";
 import type { ProductCardFragment } from "storefront-api.generated";
@@ -493,19 +479,19 @@ export let schema = createSchema({
 
 In a Weaverse Hydrogen project, there are two distinct types of loader functions:
 
-1. **Remix Route Loaders**: These loaders are used in Remix route files (`routes/*.tsx`) and follow the Remix conventions
+1. **React Router Route Loaders**: These loaders are used in React Router route files (`routes/*.tsx`)
 2. **Weaverse Component Loaders**: These loaders are defined in Weaverse component files and enable server-side data fetching at the component level
 
-### Remix Route Loaders
+### React Router Route Loaders
 
-In Remix route files, you define loaders that run on the server and provide data to all components rendered by that route:
+In React Router route files, define loaders that run on the server and provide data to the route component:
 
 ```tsx
 // app/routes/products.$handle.tsx
-import { json, type LoaderArgs } from '@shopify/remix-oxygen';
-import { useLoaderData } from '@remix-run/react';
+import type { LoaderFunctionArgs } from 'react-router';
+import { useLoaderData } from 'react-router';
 
-export async function loader({ params, context }: LoaderArgs) {
+export async function loader({ params, context }: LoaderFunctionArgs) {
   const { handle } = params;
   const { storefront } = context;
   
@@ -513,7 +499,7 @@ export async function loader({ params, context }: LoaderArgs) {
     variables: { handle },
   });
   
-  return json({ product });
+  return { product };
 }
 
 export default function ProductRoute() {
@@ -1072,7 +1058,8 @@ This pattern works particularly well for components with multiple configurable a
   - Utilize TypeScript's utility types for prop manipulation
 
 - **Follow React's Best Practices**
-  - Always use `forwardRef` for all components
+  - In React 19, accept `ref` as a prop and attach it to the root DOM element
+  - Spread the remaining Weaverse props onto that same root element
   - Separate component logic from presentation
   - Extract reusable UI elements into smaller components
   - Use composition over inheritance

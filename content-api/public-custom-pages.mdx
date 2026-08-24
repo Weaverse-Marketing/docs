@@ -1,0 +1,56 @@
+---
+title: "List Public Custom Pages"
+description: "Retrieve published custom pages for sitemap and crawler integrations without authentication"
+published: true
+---
+
+# List Public Custom Pages
+
+```
+GET /api/public/v1/projects/:projectId/custom-pages
+```
+
+Returns published custom pages for sitemap generation, crawlers, and other public discovery workflows. Unlike the authenticated Content API, this endpoint does not expose draft component content or theme settings.
+
+<Note>
+  No API key is required. Responses are CDN-cacheable and rate-limited to 60 requests per minute per IP address per project.
+</Note>
+
+## Path parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `projectId` | string | Yes | Project whose published custom pages should be listed |
+
+## Query parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `locale` | string | No | Limit results to a locale |
+| `limit` | integer | No | Page size for paginated results |
+| `after` | string | No | Cursor returned by the previous response |
+
+## Example
+
+```bash
+curl "https://studio.weaverse.io/api/public/v1/projects/PROJECT_ID/custom-pages?locale=en-us"
+```
+
+Use each returned handle exactly as published when constructing storefront URLs. A handle may contain `/`, for example `pages/gift-shop`.
+
+## When to use this endpoint
+
+- Add Weaverse custom pages to a storefront sitemap.
+- Let search crawlers discover published campaign or landing pages.
+- Build a public route manifest without distributing a Content API key.
+
+Use [List Pages](/content-api/list-pages) instead when an authenticated integration needs all assignments, types, locales, or draft-aware project data.
+
+<CardGroup cols={2}>
+  <Card title="Custom Pages" icon="file" href="/features/custom-pages">
+    Learn how custom routes are created and rendered.
+  </Card>
+  <Card title="List Pages" icon="lock" href="/content-api/list-pages">
+    Use the authenticated assignment endpoint.
+  </Card>
+</CardGroup>
